@@ -1,0 +1,17 @@
+.item-line {
+    cursor: pointer;
+    white-space: pre-line;
+    margin: 20px 0px;
+    padding: 10px;
+}
+
+.item-line:hover {
+    background-color: rgba(212, 212, 212);
+    border-radius: 5px;
+}
+
+.text-wrap-fix {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
