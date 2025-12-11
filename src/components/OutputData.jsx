@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
-import { sayfa_isimleri, tabs } from "./OutputDataVariables";
+import {
+    sayfa_isimleri,
+    tabs,
+    seo_keys_cekici,
+    seo_keys_lastikci,
+    content_structure,
+} from "./OutputDataVariables";
 
 function OutputData({ info }) {
+    console.log("x");
     const {
         firma_adi,
         ana_hizmet,
@@ -21,7 +28,7 @@ function OutputData({ info }) {
     });
     const generated_meta_td = [
         `${ana_bolge} ${ana_hizmet} - ${firma_tel}`,
-        `${ana_bolge} Yol Yardım Hizmetleri`,
+        `${ana_bolge} Acil Yol Yardım Hizmeti`,
         `${contentText.alti_adet_seo}`,
         `${ana_bolge} ${ana_hizmet} - ${firma_adi}`,
         `${ana_bolge} ${ana_hizmet} - ${firma_tel} - ${firma_adi}`,
@@ -36,9 +43,69 @@ function OutputData({ info }) {
             sayfalar_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "Hizmetlerimiz, Bölgelerimiz, Blog, Galeri, İletişim" sayfalarının her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             hizmetler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ana_hizmet}, ${ek_hizmetler}" hizmetlerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             hizmetler: `${ana_hizmet}, ${ek_hizmetler}`,
-            bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
+            // bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
+            bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler
+                .split(",")
+                .map((item) => item + " Çekici")
+                .join(
+                    ", "
+                )}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
         }));
-    }, [info]);
+    }, [
+        ana_bolge,
+        ana_hizmet,
+        mansetler,
+        ek_hizmetler,
+        ek_bolgeler,
+        firma_adi,
+    ]);
+
+    const getSeoKeys = (hizmet) => {
+        if (ana_hizmet === "Çekici") {
+            switch (hizmet) {
+                case "Çekici":
+                    return seo_keys_cekici.cekici;
+                case "Oto Çekici":
+                    return seo_keys_cekici.otocekici;
+                case "Kurtarıcı":
+                    return seo_keys_cekici.kurtarici;
+                case "Oto Kurtarıcı":
+                    return seo_keys_cekici.otokurtarici;
+                case "Oto Kurtarma":
+                    return seo_keys_cekici.otokurtarma;
+                case "Yol Yardım":
+                    return seo_keys_cekici.yolyardim;
+                default:
+                    return seo_keys_cekici.all;
+            }
+        } else {
+            switch (hizmet) {
+                case "Lastikçi":
+                    return seo_keys_lastikci.lastikci;
+                case "Oto Lastikçi":
+                    return seo_keys_lastikci.otolastikci;
+                case "Mobil Lastikçi":
+                    return seo_keys_lastikci.mobillastikci;
+                case "Mobil Oto Lastik":
+                    return seo_keys_lastikci.mobilotolastik;
+                case "Mobil Oto Lastikçi":
+                    return seo_keys_lastikci.mobilotolastikci;
+                case "Yol Yardım":
+                    return seo_keys_lastikci.yolyardim2;
+                case "Lastik Tamiri":
+                    return seo_keys_lastikci.lastiktamiri;
+                case "Lastik Değişimi":
+                    return seo_keys_lastikci.lastikdegisimi;
+                case "Lastik Onarımı":
+                    return seo_keys_lastikci.lastikonarimi;
+                case "Lastik Tamir ve Değişimi":
+                    return seo_keys_lastikci.lastiktamirvedegisimi;
+                default:
+                    return seo_keys_lastikci.all;
+            }
+        }
+    };
+
     return (
         <div>
             {/* prettier-ignore */}
@@ -46,7 +113,7 @@ function OutputData({ info }) {
                 {tabs.map((tab, index) => (
                     <li key={tab.id} className="nav-item" role="presentation">
                         <button
-                            className={`nav-link ${index === 0 ? "active" : ""}`}
+                            className={`nav-link text-dark ${index === 0 ? "active" : ""}`}
                             id={`${tab.id}-tab`}
                             data-bs-toggle="tab"
                             data-bs-target={`#${tab.id}`}
@@ -98,7 +165,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {sayfa_isimleri.map((sayfa, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: çekici, oto çekici, kurtarıcı, oto kurtarıcı, oto kurtarma, yol yardım, oto taşıma, en yakın çekici, en yakın oto çekici, en yakın kurtarıcı, en yakın oto kurtarıcı, en yakın oto kurtarma, en yakın yol yardım, en yakın oto taşıma, 7/24 çekici, 7/24 oto çekici, 7/24 kurtarıcı, 7/24 oto kurtarıcı, 7/24 oto kurtarma, 7/24 yol yardım, 7/24 oto taşıma, acil çekici, acil oto çekici, acil kurtarıcı, acil oto kurtarıcı, acil oto kurtarma, acil yol yardım, acil oto taşıma. Paragraf formatı şu şekilde olsun: <h2><span style="font-size: 18pt;"><strong>1. h2 Başlık</strong></span></h2><p>1. Paragraf</p><h3><span style="font-size: 14pt;"><strong>1. h3 başlık</strong></span></h3><p>2. Paragraf</p><h3><span style="font-size: 14pt;"><strong>2. h3 başlık</strong></span></h3><p>3. Paragraf</p><h3><span style="font-size: 14pt;"><strong>3. h3 başlık</strong></span></h3><p>4. Paragraf</p><h3><span style="font-size: 14pt;"><strong>4. h3 başlık</strong></span></h3><p>5. Paragraf</p><h3><span style="font-size: 14pt;"><strong>5. h3 başlık</strong></span></h3><p>6. Paragraf</p><h3><span style="font-size: 14pt;"><strong>6. h3 başlık</strong></span></h3><p>7. Paragraf</p>`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -129,7 +196,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {contentText.hizmetler.split(",").map(x => x.trim()).map((hizmet, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. Paragraf formatı şu şekilde olsun: <h2><span style="font-size: 18pt;"><strong>1. h2 Başlık</strong></span></h2><p>1. Paragraf</p><h3><span style="font-size: 14pt;"><strong>1. h3 başlık</strong></span></h3><p>2. Paragraf</p><h3><span style="font-size: 14pt;"><strong>2. h3 başlık</strong></span></h3><p>3. Paragraf</p><h3><span style="font-size: 14pt;"><strong>3. h3 başlık</strong></span></h3><p>4. Paragraf</p><h3><span style="font-size: 14pt;"><strong>4. h3 başlık</strong></span></h3><p>5. Paragraf</p><h3><span style="font-size: 14pt;"><strong>5. h3 başlık</strong></span></h3><p>6. Paragraf</p><h3><span style="font-size: 14pt;"><strong>6. h3 başlık</strong></span></h3><p>7. Paragraf</p>`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${getSeoKeys(hizmet)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -151,6 +218,7 @@ function OutputData({ info }) {
                     onClick={() => navigator.clipboard.writeText(contentText.bolgeler_td)}
                 >
                     {contentText.bolgeler_td}
+                    
                 </div>
 
                 {/* bolgeler_content */}
@@ -160,7 +228,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {ek_bolgeler.split(",").map(x => x.trim()).map((bolge, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: çekici, oto çekici, kurtarıcı, oto kurtarıcı, oto kurtarma, yol yardım, oto taşıma, en yakın çekici, en yakın oto çekici, en yakın kurtarıcı, en yakın oto kurtarıcı, en yakın oto kurtarma, en yakın yol yardım, en yakın oto taşıma, 7/24 çekici, 7/24 oto çekici, 7/24 kurtarıcı, 7/24 oto kurtarıcı, 7/24 oto kurtarma, 7/24 yol yardım, 7/24 oto taşıma, acil çekici, acil oto çekici, acil kurtarıcı, acil oto kurtarıcı, acil oto kurtarma, acil yol yardım, acil oto taşıma. Paragraf formatı şu şekilde olsun: <h2><span style="font-size: 18pt;"><strong>1. h2 Başlık</strong></span></h2><p>1. Paragraf</p><h3><span style="font-size: 14pt;"><strong>1. h3 başlık</strong></span></h3><p>2. Paragraf</p><h3><span style="font-size: 14pt;"><strong>2. h3 başlık</strong></span></h3><p>3. Paragraf</p><h3><span style="font-size: 14pt;"><strong>3. h3 başlık</strong></span></h3><p>4. Paragraf</p><h3><span style="font-size: 14pt;"><strong>4. h3 başlık</strong></span></h3><p>5. Paragraf</p><h3><span style="font-size: 14pt;"><strong>5. h3 başlık</strong></span></h3><p>6. Paragraf</p><h3><span style="font-size: 14pt;"><strong>6. h3 başlık</strong></span></h3><p>7. Paragraf</p>`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 

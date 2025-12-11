@@ -1,23 +1,45 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import OutputData from "./OutputData";
 
 function CompanyInfo() {
     const [info, setInfo] = useState({
-        firma_adi: "Yıldız Oto Kurtarma",
-        ana_hizmet: "Çekici",
-        ek_hizmetler: "Oto Kurtarıcı, Yol Yardım, Oto Taşıma",
-        ana_bolge: "Sakarya",
-        ek_bolgeler:
-            "Adapazarı, Akyazı, Arifiye, Erenler, Ferizli, Geyve, Hendek, Karapürçek, Karasu, Kaynarca, Kocaali, Pamukova, Sapanca, Serdivan, Söğütlü, Taraklı",
-        firma_tel: "0264 241 41 90",
-        mansetler:
-            "Sakarya En Yakın Çekici, Sakarya Oto Kurtarma, Sakarya Acil En Yakın Çekici, Sakarya 7/24 Oto Kurtarıcı",
+        firma_adi: localStorage.getItem("firma_adi") || "",
+        ana_hizmet: localStorage.getItem("ana_hizmet") || "",
+        ek_hizmetler: localStorage.getItem("ek_hizmetler") || "",
+        ana_bolge: localStorage.getItem("ana_bolge") || "",
+        ek_bolgeler: localStorage.getItem("ek_bolgeler") || "",
+        firma_tel: localStorage.getItem("firma_tel") || "",
+        mansetler: localStorage.getItem("mansetler") || "",
     });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        Object.entries(info).forEach(([key, value]) => {
+            localStorage.setItem(key, value);
+        });
+    };
+
+    const handleReset = (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        setInfo({
+            firma_adi: "",
+            ana_hizmet: "",
+            ek_hizmetler: "",
+            ana_bolge: "",
+            ek_bolgeler: "",
+            firma_tel: "",
+            mansetler: "",
+        });
+    };
 
     return (
         <div className="col-12 p-lg-5 d-flex flex-column flex-lg-row gap-5">
-            <form className="col-12 col-lg-3 shadow rounded px-4 px-lg-5 py-4">
+            <form
+                className="col-12 col-lg-3 shadow rounded px-4 px-lg-5 py-4"
+                onSubmit={handleSubmit}
+                onReset={handleReset}
+            >
                 <div className="d-flex flex-column my-3">
                     <label htmlFor="">Firma Adı</label>
                     <input
@@ -109,6 +131,14 @@ function CompanyInfo() {
                             })
                         }
                     />
+                </div>
+                <div className="d-flex flex-row justify-content-between">
+                    <button className="btn btn-success" type="submit">
+                        Kaydet
+                    </button>
+                    <button className="btn btn-danger" type="reset">
+                        Temizle
+                    </button>
                 </div>
             </form>
             <div className="col shadow rounded px-4 px-lg-5 py-4 d-flex flex-wrap">

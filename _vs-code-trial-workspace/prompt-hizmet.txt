@@ -1,9 +1,0 @@
-Kartepe Lastikçi - Artvin Lastik Acil Yol Yardım firmasının Çekici hizmet sayfası için 7 paragraftan oluşan, her paragrafın 5 cümle olduğu bir metin üretir misin. paragrafların başında başlıklar olsun. seo keyleri bolca kullan ve seo keyler <strong> olsun, başlıklarda numaralandırma yapma. Google tarafından kopya içerik olarak algılanmaması için benzersiz içerikler üret. Paragraf formatı aşağıdaki gibi olsun:
-
-<h2><span style="font-size: 18pt;"><strong>1. h2 Başlık</strong></span></h2><p>1. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>1. h3 başlık</strong></span></h3><p>2. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>2. h3 başlık</strong></span></h3><p>3. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>3. h3 başlık</strong></span></h3><p>4. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>4. h3 başlık</strong></span></h3><p>5. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>5. h3 başlık</strong></span></h3><p>6. Paragraf</p>
-<h3><span style="font-size: 14pt;"><strong>6. h3 başlık</strong></span></h3><p>7. Paragraf</p>
