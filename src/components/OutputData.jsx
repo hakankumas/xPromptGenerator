@@ -33,6 +33,7 @@ function OutputData({ info }) {
         `${ana_bolge} ${ana_hizmet} - ${firma_adi}`,
         `${ana_bolge} ${ana_hizmet} - ${firma_tel} - ${firma_adi}`,
         `${firma_adi} - ${firma_tel} - ${ana_bolge} ${ana_hizmet}`,
+        `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının Hizmetleri: "${ana_hizmet}, ${ek_hizmetler}". Hizmet Bölgeleri: "${ana_bolge}, ${ek_bolgeler}". ${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının Blog sayfası için 8 adet benzersiz blog başlıkları üret. Üretilen başlıkların her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
     ];
 
     useEffect(() => {
@@ -75,6 +76,8 @@ function OutputData({ info }) {
                     return seo_keys_cekici.otokurtarma;
                 case "Yol Yardım":
                     return seo_keys_cekici.yolyardim;
+                case "Oto Taşıma":
+                    return seo_keys_cekici.ototasima;
                 default:
                     return seo_keys_cekici.all;
             }
@@ -165,7 +168,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {sayfa_isimleri.map((sayfa, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -196,7 +199,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {contentText.hizmetler.split(",").map(x => x.trim()).map((hizmet, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${getSeoKeys(hizmet)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${getSeoKeys(hizmet)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -228,7 +231,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {ek_bolgeler.split(",").map(x => x.trim()).map((bolge, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all.split(",").map((item) => bolge + item).join(", ") : seo_keys_lastikci.all.split(",").map((item) => bolge + item).join(", ")}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
