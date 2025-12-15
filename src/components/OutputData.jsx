@@ -47,7 +47,11 @@ function OutputData({ info }) {
             // bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler
                 .split(",")
-                .map((item) => item + " Çekici")
+                .map(
+                    (item) =>
+                        item +
+                        `${ana_hizmet == "Çekici" ? " Çekici" : " Lastikçi"}`
+                )
                 .join(
                     ", "
                 )}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
