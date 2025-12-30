@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    sayfa_isimleri,
-    tabs,
-    seo_keys_cekici,
-    seo_keys_lastikci,
-    content_structure,
-} from "./OutputDataVariables";
+import { sayfa_isimleri, tabs, content_structure } from "./OutputDataVariables";
 
 function OutputData({ info }) {
     console.log("x");
@@ -44,14 +38,9 @@ function OutputData({ info }) {
             sayfalar_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "Hizmetlerimiz, Bölgelerimiz, Blog, Galeri, İletişim" sayfalarının her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             hizmetler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ana_hizmet}, ${ek_hizmetler}" hizmetlerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             hizmetler: `${ana_hizmet}, ${ek_hizmetler}`,
-            // bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
             bolgeler_td: `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${ek_bolgeler
                 .split(",")
-                .map(
-                    (item) =>
-                        item +
-                        `${ana_hizmet == "Çekici" ? " Çekici" : " Lastikçi"}`
-                )
+                .map((item) => item + ` ${ana_hizmet}`)
                 .join(
                     ", "
                 )}" hizmet bölgelerinin her biri için 60 karakterlik SEO Title ve ikişer adet 160 karakterlik SEO Description üret.`,
@@ -65,53 +54,31 @@ function OutputData({ info }) {
         firma_adi,
     ]);
 
-    const getSeoKeys = (hizmet) => {
-        if (ana_hizmet === "Çekici") {
-            switch (hizmet) {
-                case "Çekici":
-                    return seo_keys_cekici.cekici;
-                case "Oto Çekici":
-                    return seo_keys_cekici.otocekici;
-                case "Kurtarıcı":
-                    return seo_keys_cekici.kurtarici;
-                case "Oto Kurtarıcı":
-                    return seo_keys_cekici.otokurtarici;
-                case "Oto Kurtarma":
-                    return seo_keys_cekici.otokurtarma;
-                case "Yol Yardım":
-                    return seo_keys_cekici.yolyardim;
-                case "Oto Taşıma":
-                    return seo_keys_cekici.ototasima;
-                default:
-                    return seo_keys_cekici.all;
-            }
-        } else {
-            switch (hizmet) {
-                case "Lastikçi":
-                    return seo_keys_lastikci.lastikci;
-                case "Oto Lastikçi":
-                    return seo_keys_lastikci.otolastikci;
-                case "Mobil Lastikçi":
-                    return seo_keys_lastikci.mobillastikci;
-                case "Mobil Oto Lastik":
-                    return seo_keys_lastikci.mobilotolastik;
-                case "Mobil Oto Lastikçi":
-                    return seo_keys_lastikci.mobilotolastikci;
-                case "Yol Yardım":
-                    return seo_keys_lastikci.yolyardim2;
-                case "Lastik Tamiri":
-                    return seo_keys_lastikci.lastiktamiri;
-                case "Lastik Değişimi":
-                    return seo_keys_lastikci.lastikdegisimi;
-                case "Lastik Onarımı":
-                    return seo_keys_lastikci.lastikonarimi;
-                case "Lastik Tamir ve Değişimi":
-                    return seo_keys_lastikci.lastiktamirvedegisimi;
-                default:
-                    return seo_keys_lastikci.all;
-            }
-        }
+    // Hizmetler
+    const editedServices = (hizmet) => {
+        const seoKeys = `${hizmet}, en yakın ${hizmet}, acil ${hizmet}, 7/24 ${hizmet}`;
+        return seoKeys.toLocaleLowerCase("tr-TR");
     };
+
+    // Bölgeler
+    const editedRegionService = (bolge) => {
+        const sonuc = [];
+
+        contentText.hizmetler.split(",").forEach((hizmet) => {
+            hizmet = hizmet.trim().toLocaleLowerCase("tr-TR");
+
+            sonuc.push(
+                `${bolge} ${hizmet}`,
+                `${bolge} en yakın ${hizmet}`,
+                `${bolge} acil ${hizmet}`,
+                `${bolge} 7/24 ${hizmet}`
+            );
+        });
+
+        return sonuc.join(", ");
+    };
+
+    // Sayfalar
 
     return (
         <div>
@@ -155,37 +122,6 @@ function OutputData({ info }) {
                     {contentText.dort_adet_manset}
                 </div>
 
-                {/* sayfalar_td */}
-                <div 
-                    className="tab-pane fade item-line" 
-                    id="sayfalar_td" 
-                    role="tabpanel" 
-                    onClick={() => navigator.clipboard.writeText(contentText.sayfalar_td)}
-                >
-                    {contentText.sayfalar_td}
-                </div>
-
-                {/* sayfalar_content */}
-                <div 
-                    className="tab-pane fade" 
-                    id="sayfalar_content" 
-                    role="tabpanel" 
-                >
-                    {sayfa_isimleri.map((sayfa, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all : seo_keys_lastikci.all}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
-
-                        return (
-                            <div 
-                                key={index}
-                                className="item-line"
-                                onClick={() => navigator.clipboard.writeText(generatedText)}
-                            >
-                                {generatedText}
-                            </div>
-                        );
-                    })}
-                </div>
-
                 {/* hizmetler_td */}
                 <div 
                     className="tab-pane fade item-line" 
@@ -203,7 +139,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {contentText.hizmetler.split(",").map(x => x.trim()).map((hizmet, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${getSeoKeys(hizmet)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${hizmet}" hizmet sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${editedServices(hizmet)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -235,7 +171,7 @@ function OutputData({ info }) {
                     role="tabpanel" 
                 >
                     {ek_bolgeler.split(",").map(x => x.trim()).map((bolge, index) => {
-                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${ana_hizmet == "Çekici" ? seo_keys_cekici.all.split(",").map((item) => bolge + item).join(", ") : seo_keys_lastikci.all.split(",").map((item) => bolge + item).join(", ")}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${bolge} ${ana_hizmet}" hizmet bölgesi sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun: "${editedRegionService(bolge)}". Paragraf formatı şu şekilde olsun: ${content_structure}`;
 
                         return (
                             <div 
@@ -248,6 +184,38 @@ function OutputData({ info }) {
                         );
                     })}
                 </div>
+
+                {/* sayfalar_td */}
+                <div 
+                    className="tab-pane fade item-line" 
+                    id="sayfalar_td" 
+                    role="tabpanel" 
+                    onClick={() => navigator.clipboard.writeText(contentText.sayfalar_td)}
+                >
+                    {contentText.sayfalar_td}
+                </div>
+
+                {/* sayfalar_content */}
+                <div 
+                    className="tab-pane fade" 
+                    id="sayfalar_content" 
+                    role="tabpanel" 
+                >
+                    {sayfa_isimleri.map((sayfa, index) => {
+                        const generatedText = `${ana_bolge} ${ana_hizmet} - ${firma_adi} firmasının "${sayfa}" sayfası için 8 paragraftan oluşan her paragrafın 5 cümle olduğu bir seo metni üret. Firmanın hizmetleri: "${ana_hizmet}, ${ek_hizmetler}", hizmet bölgeleri: "${ana_bolge}, ${ek_bolgeler}". Paragrafların üstünde başlıklar olsun ama başlıkların başında sayısal numaralandırma olmasın. Metinler Google tarafından kopya içerik olarak tespit edilmemesi için benzersiz içerikler oluştur. SEO keyleri metnin içinde bolca kullan, SEO keyler strong tagları içinde olsun. Paragraf formatı şu şekilde olsun: ${content_structure}`;
+
+                        return (
+                            <div 
+                                key={index}
+                                className="item-line"
+                                onClick={() => navigator.clipboard.writeText(generatedText)}
+                            >
+                                {generatedText}
+                            </div>
+                        );
+                    })}
+                </div>
+
             </div>
         </div>
     );

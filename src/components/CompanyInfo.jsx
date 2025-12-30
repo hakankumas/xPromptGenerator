@@ -34,9 +34,9 @@ function CompanyInfo() {
     };
 
     return (
-        <div className="col-12 p-lg-5 d-flex flex-column flex-lg-row gap-5">
+        <div className="col-12 p-lg-5 d-flex flex-row gap-1 gap-lg-5">
             <form
-                className="col-12 col-lg-3 shadow rounded px-4 px-lg-5 py-4"
+                className="col-5 col-lg-3 shadow rounded px-4 px-lg-5 py-4"
                 onSubmit={handleSubmit}
                 onReset={handleReset}
             >

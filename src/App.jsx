@@ -4,7 +4,7 @@ import CompanyInfo from "./components/CompanyInfo";
 
 function App() {
     return (
-        <div className="bg-light vh-100">
+        <div className="bg-light h-100">
             <CompanyInfo />
         </div>
     );
